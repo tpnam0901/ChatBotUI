@@ -1,0 +1,43 @@
+{% extends 'authentication/index.html' %}
+{% load static %}
+
+{% block title %}
+    Sign In
+{% endblock %}
+
+{% block head %}
+    <link rel="stylesheet" type="text/css" href="{% static 'authentication/signin.css' %}" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script type="text/javascript" src="{% static 'authentication/signup.js' %}"></script>
+{% endblock head %}
+
+{% block body %}
+    <!-- first container contain webpage icon, sign up, sign in, title of the page and some extra info -->
+    <div class="container-fluid first-container">
+        <div class="second-container">
+            <h1>Sign In</h1>
+            <form class="signin-form" action="{% url 'authentication:signup' %}" method="post">
+                {% csrf_token %}
+                <label for="username">Username:</label><br>
+                <div class="username-noti" id="username-noti"></div>
+                <i class="fa fa-user icon"></i>
+                <input type="text" id="username" name="username" placeholder="Type your username" required="required"><br>
+
+                <label for="useremail">Email:</label><br>
+                <div class="useremail-noti" id="useremail-noti"></div>
+                <i class="fa fa-envelope icon"></i>
+                <input type="text" id="useremail" name="useremail" placeholder="Type your email" required="required"><br>
+
+                <label for="password">Password:</label><br>
+                <div id="password-noti"></div>
+                <i class="fa fa-lock icon"></i>
+                <input type="password" id="password" name="password" placeholder="Type your password" required="required"><br>
+
+                <div id="signup-noti">{{ message }}</div>
+                <button type="submit" id="submit-btn">Sign Up</button>
+                
+                <p> Already have an account? <a href={% url 'authentication:signin' %}> Sign in here </a></p>
+            </form>
+        </div>
+    </div>
+{% endblock body %}
