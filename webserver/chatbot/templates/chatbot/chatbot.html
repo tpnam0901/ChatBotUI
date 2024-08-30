@@ -1,0 +1,73 @@
+{% extends 'authentication/index.html' %}
+{% load static %}
+
+{% block head %}
+    <link rel="stylesheet" type="text/css" href="{% static 'chatbot/chatbot.css' %}" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script type="text/javascript" src="{% static 'chatbot/jquery.js' %}"></script>
+    <script type="text/javascript" src="{% static 'chatbot/chatbot.js' %}"></script>
+{% endblock head %}
+
+{% block body %}
+    <div class="container">
+        <div class="chatbox">
+            {% comment %} <div class="hidden-element" id="csrf-token">{{ csrf_token }}</div>
+            <div class="hidden-element" id="base-url">{{ base_url }}</div>
+            <div class="hidden-element" id="start-message-id">{{ start_message_id }}</div> {% endcomment %}
+
+            <div class="history-block">
+                <button type="button" class="new-chat-button" id="new-chat"> + New chat</button>  
+                <div class="chat-history">
+                    {% for key, value in old_messages.items %}
+                    <div class="old-message {{ key }}">
+                        <button class="old-message-delete-button" id="table-btn-delete"><i class="fa fa-trash icon"></i></button>
+                        <button id="message-click-button">{{ value }}</button>
+                    </div>
+                    {% endfor %}
+                </div>
+
+            </div>
+            <div class="content-block"> 
+                <h2 class="chat-header">Openwebtext GPT2 Chatbot</h2>
+                <div class="chat-messages">
+                    {% comment %} <div class="message blue-bg">
+                        <div class="messager-sender"><img src="{% static 'authentication/media/logo.png' %}" class="msg-img">Human</div>
+                        <div class="messager-text">Human</div>
+                        <div class="messager-timestamp">10:31AM</div>
+                    </div>
+                    <div class="message gray-bg">
+                        <div class="messager-sender"><img src="{% static 'authentication/media/logo.png' %}" class="msg-img">Bot</div>
+                        <div class="messager-text">Bot</div>
+                        <div class="messager-timestamp">10:30AM</div>
+                    </div> {% endcomment %}
+                </div>
+            </div>
+            <div class="prompt-block">
+                    <form class="chat-input-form">
+                        <input type="text" class="chat-input" required placeholder="Type your messages here...">
+                        <button type="submit" class"button send-button">Send</button>
+                    </form>
+                    {% comment %} <button class="button clear-chat-button"> Clear chat</button> {% endcomment %}
+            </div>
+
+            <div class="bot-block">
+                <button type="button" class="button bot-select-button active-bot" id="bot-openwebtext">Openwebtext</button> 
+                <button type="button" class="button bot-select-button" id="bot-custom">Custom Dataset</button> 
+            </div>
+
+            <div class="signout-block">
+                <a href="{% url 'authentication:signout' %}">
+                    <i class="fa fa-sign-out"></i>Sign out
+                </a>
+            </div>
+        </div>
+    </div>
+    <a href="{% static 'chatbot/media/chatbot.jpg' %}"  class="bot-icon-url"></a>
+    <a href="{% static 'authentication/media/logo.png' %}"  class="human-icon-url"></a>
+    <!-- second container contain information about the using of product, some example -->
+    <script>
+        const csrfToken = '{{ csrf_token }}';
+        const baseURL = '{{ base_url }}';
+        var messageID = Number('{{ start_message_id }}');
+    </script>
+{% endblock body %}

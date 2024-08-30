@@ -27,6 +27,12 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+USER_DATA_ROOT = "./userdata"
+
+GPT_OWT_PORT = 8123
+GPT_CD_PORT = 8124
+GPT_API_URL = "http://localhost"
+GPT_TOKEN = "THIS_IS_MY_CUSTOM_TOKEN"
 
 # Application definition
 
@@ -107,7 +113,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = "en-us"
 
-TIME_ZONE = "UTC"
+TIME_ZONE = "Asia/Seoul"
 
 USE_I18N = True
 
