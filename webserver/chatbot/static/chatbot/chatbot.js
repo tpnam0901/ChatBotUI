@@ -18,13 +18,17 @@ window.onload = function (){
             <div class="messager-timestamp">${message.timestamp}</div>
         </div>
     `
-
-    let classID = 10
-    let newMessage =""
+    
+    let newMessage = ""
     let isNewMessage = true
+    let isOWTGPT = true
+    let gptOwtUrlAPI = baseURL + "gpt2owt/"
+    let gptCdUrlAPI = baseURL + "gpt2cd/"
+    let getHistoryAPI = baseURL + "gethistory/"
+    let delHistoryAPI = baseURL + "delhistory/"
 
     const createOldMessageElement = () => `
-        <div class="old-message old-message-${classID}">
+        <div class="old-message old-message-${messageID}">
                         <button class="old-message-delete-button id="table-btn-delete"><i class="fa fa-trash icon"></i></button>
                         <button id="message-click-button">${newMessage}</button>
         </div>
@@ -36,44 +40,85 @@ window.onload = function (){
 
     )
 
-    let messageSender = "Bot"
     const updateMessageSender = (name, isOWT) =>{
         chatHeader.innerText = `${name}`
         if (isOWT) {
+            isOWTGPT = true
             botSelectorBtnOWT.classList.add('active-bot')
             botSelectorBtnCD.classList.remove('active-bot')
         }
 
         if (!isOWT) {
+            isOWTGPT = false
             botSelectorBtnCD.classList.add('active-bot')
             botSelectorBtnOWT.classList.remove('active-bot')
         }
-        
+        isNewMessage=true
+        chatMessages.innerHTML = ''
+        for (var j = 0; j < chatHistory.children.length; j++) {
+            let child = chatHistory.children[j]
+            child.classList.remove("active-message")
+        }
         chatInput.focus()
     }
 
     botSelectorBtnOWT.onclick = () => updateMessageSender('Openwebtext GPT2 Chatbot', true)
     botSelectorBtnCD.onclick = () => updateMessageSender('Cusom dataset GPT2 Chatbot', false)
 
+    // Default
+    updateMessageSender('Openwebtext GPT2 Chatbot', true)
+
     const sendMessage = (e) => {
         e.preventDefault()
 
-        const timestamp = new Date().toLocaleString('en-US', {hour: 'numeric', minute: 'numeric'})
+        const timestamp = new Date().toLocaleString('en-US', {year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric', hour12: false})
         const message = {
-            sender: messageSender,
+            sender: "Human",
             text: chatInput.value,
             timestamp
         }
         if (isNewMessage){
-            classID +=1
+            messageID +=1
             newMessage = message.text
             isNewMessage= false
             chatHistory.innerHTML +=createOldMessageElement()
             updateHistory()
+
+            let classID = `old-message-${messageID}`
+            let child = document.querySelector(`.${classID}`)
+            child.classList.add("active-message")
+            for (var j = 0; j < chatHistory.children.length; j++) {
+                let childCom = chatHistory.children[j]
+                if (!(classID === childCom.classList[1])){
+                    childCom.classList.remove("active-message")
+                }
+            }
         }
         messages.push(message)
         localStorage.setItem('messages', JSON.stringify(messages))
         chatMessages.innerHTML += createChatMessageElement(message)
+        let urlAPI = isOWTGPT ? gptOwtUrlAPI : gptCdUrlAPI
+        $.ajax({
+            type: "POST",
+            url: urlAPI,   
+            data: {csrfmiddlewaretoken: csrfToken,
+                    'messageID': `old-message-${messageID}`,
+                    'sender': "Human",
+                    'message': chatInput.value,
+                    'timestamp': timestamp,
+            },  
+            success:  function(response){
+
+                let botResponse = $.parseJSON(response);
+                const botMessage = {
+                    sender: "Bot",
+                    text: botResponse["text"],
+                    timestamp: botResponse["timestamp"],
+                }
+                chatMessages.innerHTML += createChatMessageElement(botMessage)
+            }
+        });
+
         chatInputForm.reset()
         chatMessages.scrollTop = chatMessages.scrollHeight
     }
@@ -96,22 +141,51 @@ window.onload = function (){
             let child = chatHistory.children[i]
             let oldMessageDeleteBtn = child.children[0]
             let oldMessageBtn = child.children[1]
-            let classID = child.classList[1]
+            let messageID = child.classList[1]
             oldMessageBtn.addEventListener('click',() => {
                 child.classList.add("active-message")
                 chatInput.focus()
                 for (var j = 0; j < chatHistory.children.length; j++) {
                     let childCom = chatHistory.children[j]
-                    if (!(classID === childCom.classList[1])){
+                    if (!(messageID === childCom.classList[1])){
                         childCom.classList.remove("active-message")
                     }
                 }
+
+                chatMessages.innerHTML = ''
+                $.ajax({
+                    type: "POST",
+                    url: getHistoryAPI,   
+                    data: {csrfmiddlewaretoken: csrfToken,
+                            'messageID': child.classList[1]},  
+                    success:  function(response){
+                        let oldMessages = $.parseJSON(response)['history'];
+                        for (var j = 0; j < oldMessages.length; j++) {
+                              let oldMessage = oldMessages[j]
+                              chatMessages.innerHTML += createChatMessageElement(oldMessage)
+                          }
+                        
+                    }
+                });
     
                 }
             )
     
             oldMessageDeleteBtn.addEventListener('click',() => {
+              if (child.classList.length === 3){
+                  chatMessages.innerHTML = ''
+                }
+                $.ajax({
+                    type: "POST",
+                    url: delHistoryAPI,   
+                    data: {csrfmiddlewaretoken: csrfToken,
+                            'messageID': child.classList[1]},  
+                    success:  function(response){
+                       console.log(response) 
+                    }
+                });
                 child.remove()
+
                 }
             )
         }

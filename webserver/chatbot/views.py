@@ -1,12 +1,16 @@
-from django.shortcuts import render
-from django.shortcuts import render
-from django.shortcuts import render, HttpResponseRedirect
+import json
+import os
+from datetime import datetime
+from django.shortcuts import render, HttpResponseRedirect, HttpResponse
 from django.views import View
 from django.urls import reverse
-from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
-from django.contrib.auth.models import User
+from django.conf import settings
+
+join = os.path.join
+exists = os.path.exists
 
 # Create your views here.
+os.makedirs(settings.USER_DATA_ROOT, exist_ok=True)
 
 
 class Chatbot(View):
@@ -16,7 +20,123 @@ class Chatbot(View):
         # check if user is logged in
         if not request.user.is_authenticated:
             return HttpResponseRedirect(reverse("authentication:signin"))
-        context = {'old_messages':{"old-message-0":"Hi, how are you?",
-                                   "old-message-1":"Hello, are you John?"}}
+        context = {"base_url": request.build_absolute_uri()}
+
+        username = request.user.username
+        userdata = {"index": 0}
+        userpath = join(settings.USER_DATA_ROOT, username + ".json")
+        if exists(userpath):
+            with open(userpath, "r") as openfile:
+                userdata = json.load(openfile)
+        old_messages = {}
+        for k, v in userdata.items():
+            if k != "index":
+                old_messages.update({k: v[0]["text"]})
+        context.update({"old_messages": old_messages})
+        context.update({"start_message_id": userdata["index"]})
         return render(request, "chatbot/chatbot.html", context)
-    
+
+
+def gpt2_api(request, url):
+    username = request.user.username
+    userdata = {"index": 0}
+    userpath = join(settings.USER_DATA_ROOT, username + ".json")
+    if exists(userpath):
+        with open(userpath, "r") as openfile:
+            userdata = json.load(openfile)
+
+    messageID = request.POST["messageID"]
+    userdata["index"] = int(messageID.split("-")[-1])
+
+    messages = userdata.get(messageID, [])
+    messages.append(
+        {
+            "sender": request.POST["sender"],
+            "text": request.POST["message"],
+            "timestamp": request.POST["timestamp"],
+        }
+    )
+
+    try:
+        # Call API
+        timestamp = datetime.now().strftime("%m/%d/%Y, %H:%M")
+        response = {"text": "Bot response", "timestamp": timestamp}
+    except:
+        timestamp = datetime.now().strftime("%m/%d/%Y, %H:%M")
+        response = {
+            "text": "I'm busy right now! Please try again later",
+            "timestamp": timestamp,
+        }
+
+    messages.append(
+        {
+            "sender": "Bot",
+            "text": response["text"],
+            "timestamp": response["timestamp"],
+        }
+    )
+    userdata[messageID] = messages
+    with open(userpath, "w", encoding="utf-8") as f:
+        json.dump(userdata, f, ensure_ascii=False, indent=4)
+    return HttpResponse(json.dumps(response))
+
+
+def gpt2_owt_api(request):
+    if request.method == "GET":
+        return HttpResponseRedirect(reverse("authentication:signin"))
+    elif request.method == "POST":
+        if not request.user.is_authenticated:
+            return HttpResponse("Required sign-in to call API")
+        return gpt2_api(request, "#")
+
+
+def gpt2_cd_api(request):
+    if request.method == "GET":
+        return HttpResponseRedirect(reverse("authentication:signin"))
+    elif request.method == "POST":
+        if not request.user.is_authenticated:
+            return HttpResponse("Required sign-in to call API")
+        return gpt2_api(request, "#")
+
+
+def get_history_api(request):
+    if request.method == "GET":
+        return HttpResponseRedirect(reverse("authentication:signin"))
+    elif request.method == "POST":
+        if not request.user.is_authenticated:
+            return HttpResponse("Required sign-in to call API")
+
+        username = request.user.username
+
+        userdata = {"index": 0}
+        userpath = join(settings.USER_DATA_ROOT, username + ".json")
+        if exists(userpath):
+            with open(userpath, "r") as openfile:
+                userdata = json.load(openfile)
+
+        messageID = request.POST["messageID"]
+        messages = userdata.get(messageID, [])
+
+        return HttpResponse(json.dumps({"history": messages}))
+
+
+def delete_history_api(request):
+    if request.method == "GET":
+        return HttpResponseRedirect(reverse("authentication:signin"))
+    elif request.method == "POST":
+        if not request.user.is_authenticated:
+            return HttpResponse("Required sign-in to call API")
+
+        username = request.user.username
+
+        userdata = {"index": 0}
+        userpath = join(settings.USER_DATA_ROOT, username + ".json")
+        if exists(userpath):
+            with open(userpath, "r") as openfile:
+                userdata = json.load(openfile)
+
+        messageID = request.POST["messageID"]
+        userdata.pop(messageID)
+        with open(userpath, "w", encoding="utf-8") as f:
+            json.dump(userdata, f, ensure_ascii=False, indent=4)
+        return HttpResponse("Done!")

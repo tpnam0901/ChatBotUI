@@ -4,12 +4,17 @@
 {% block head %}
     <link rel="stylesheet" type="text/css" href="{% static 'chatbot/chatbot.css' %}" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script type="text/javascript" src="{% static 'chatbot/jquery.js' %}"></script>
     <script type="text/javascript" src="{% static 'chatbot/chatbot.js' %}"></script>
 {% endblock head %}
 
 {% block body %}
     <div class="container">
         <div class="chatbox">
+            {% comment %} <div class="hidden-element" id="csrf-token">{{ csrf_token }}</div>
+            <div class="hidden-element" id="base-url">{{ base_url }}</div>
+            <div class="hidden-element" id="start-message-id">{{ start_message_id }}</div> {% endcomment %}
+
             <div class="history-block">
                 <button type="button" class="new-chat-button" id="new-chat"> + New chat</button>  
                 <div class="chat-history">
@@ -57,7 +62,12 @@
             </div>
         </div>
     </div>
-    <a href="{% static 'authentication/media/logo.png' %}"  class="bot-icon-url"></a>
+    <a href="{% static 'chatbot/media/chatbot.jpg' %}"  class="bot-icon-url"></a>
     <a href="{% static 'authentication/media/logo.png' %}"  class="human-icon-url"></a>
     <!-- second container contain information about the using of product, some example -->
+    <script>
+        const csrfToken = '{{ csrf_token }}';
+        const baseURL = '{{ base_url }}';
+        var messageID = Number('{{ start_message_id }}');
+    </script>
 {% endblock body %}

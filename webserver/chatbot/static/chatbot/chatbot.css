@@ -71,6 +71,10 @@ html, body {
     font-family: 'Roboto', sans-serif;
 }
 
+.hidden-element {
+    display: none;
+}
+
 /*----------------------- bot-block-------------------------------------*/
 .bot-select-button{
     color: white;
