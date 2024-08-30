@@ -1,0 +1,365 @@
+html, body {
+    margin: 0;
+    padding: 0px;
+    box-sizing: border-box;
+    font-family: 'Roboto', sans-serif;
+}
+
+
+.container {
+    width: 100%;
+    height: 100vh;
+    background-image: linear-gradient(to right, rgb(0, 24,63), rgb(0, 55, 94));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-family: 'Roboto', sans-serif;
+}
+
+.chatbox{
+    background: linear-gradient(to right, rgb(0, 20,45), rgb(0, 55, 94));
+    width: 100%;
+    height: 100%;
+    min-width: 250px;
+    font-family: 'Roboto', sans-serif;
+}
+
+.history-block{
+    width: 15%;
+    height: 100%;
+    flex-basis: 250px;
+    background: linear-gradient(to left, rgb(0, 20,45), rgb(0, 55, 94));
+    position:absolute;
+    font-family: 'Roboto', sans-serif;
+}
+
+.content-block{
+    position:absolute;
+    bottom: 20%;
+    left: 15%;
+    width: 85%;
+    height:80%;
+    font-family: 'Roboto', sans-serif;
+}
+
+.prompt-block{
+    display: flex;
+    align-items: center;
+    position:absolute;
+    top: 92%;
+    left: 28%;
+    font-family: 'Roboto', sans-serif;
+}
+
+.signout-block{
+    position: absolute;
+    top:96%;
+    left: 1%;
+    text-align: right;
+    font-family: 'Roboto', sans-serif;
+}
+
+.bot-block{
+    position: absolute;
+    top: 1%;
+    right: 1%;
+    text-align: center;
+    justify-content: center;
+    gap: 1em;
+    max-width: 40em;
+    font-family: 'Roboto', sans-serif;
+}
+
+/*----------------------- bot-block-------------------------------------*/
+.bot-select-button{
+    color: white;
+    background-color:  rgb(0, 74, 122);
+
+    border: none;
+    padding: 0.625;
+    border-radius: 0.5em;
+    cursor: pointer;
+    color: #fff;
+    font-size: 16px;
+    font-weight:bold;
+}
+
+.bot-select-button:hover {
+    filter: brightness(0.9);
+}
+
+.bot-select-button:active {
+    transform: translateY(2px);
+}
+
+.active-bot{
+    background-color: rgb(43, 42, 42);
+    box-shadow: 0 0 0.5em 0.1em #c3c3c333;
+}
+
+/*----------------------- signout-block -------------------------------------*/
+.signout-block>div> a, a:link{
+    color: white;
+}
+
+.signout-block>div> a, a:visited{
+    width: 100%;
+    height: 100%;
+    padding-right: 5%;
+    background-color: transparent;
+    color: white;
+    font-size: 50px;
+    border: none;
+    cursor: pointer;
+    /* cursor */
+}
+
+.signout-block> div > a,  a:hover{
+    color: rgb(0, 20,45);
+    /* background color */
+}
+.signout-block> div > a, a:link{
+    text-decoration: none;
+}
+
+/*----------------------- prompt-block -------------------------------------*/
+.prompt-block button {
+    width: 60px;
+    height: 50px;
+    background: rgb(0, 74, 122);
+    border: none;
+    padding: 0.625;
+    border-radius: 0.5em;
+    cursor: pointer;
+    color: #fff;
+    font-size: 16px;
+    font-weight:bold;
+}
+
+.prompt-block button:hover {
+    filter: brightness(0.9);
+}
+
+.prompt-block button:active {
+    transform: translateY(2px);
+}
+
+.prompt-block input::placeholder{
+    color: #afaeae;
+}
+
+.prompt-block input{
+    border: 0;
+    border-radius: 10px;
+    margin-right: 10px;
+    outline: none;
+    padding: 20px 40px;
+    background: rgb(0, 55, 94);
+    color: #fff;
+    width: 50vw;
+    font-size: 16px;
+    font-weight:300;
+}
+
+
+
+/*----------------------- history-block -------------------------------------*/
+.chat-history{
+    margin-top: 30%;
+    margin-left: 5%;
+    width: 96%;
+    height: 94%;
+    overflow-y: scroll;
+}
+
+.chat-history::-webkit-scrollbar{
+    display: none;
+}
+
+.old-message{
+    width: 85%;
+    height: 100px;
+    display: flex;
+    color: white;
+    background-color:  rgb(0, 57, 95);
+    border: none;
+    padding: 0.6em;
+    border-radius: 0.5em;
+    cursor: pointer;
+    color: #fff;
+    font-size: 16px;
+    font-weight:100;
+    margin-bottom: 0.625em;
+    margin-left:0.1em;
+    margin-top: 0.1em;
+    margin-right:0.1em;
+    
+}
+
+.old-message button{
+    background: none;
+    border: none;
+    color: #fff;
+    overflow: hidden;
+}
+
+.old-message button:hover {
+    filter: brightness(0.5);
+}
+
+.old-message button:active {
+    transform: translateY(2px);
+}
+
+.old-message-delete-button{
+    width: 60px;
+}
+
+.active-message{
+    /* background-color: rgb(43, 42, 42); */
+    box-shadow: 0 0 0.5em 0.1em #c3c3c333;
+}
+
+
+
+.new-chat-button{
+    width: 80%;
+    top: 0.5%;
+    left: 10%;
+    position: absolute;
+    color: white;
+    background-color:  rgb(0, 57, 95);
+    border: none;
+    padding: 0.6em;
+    border-radius: 0.5em;
+    cursor: pointer;
+    color: #fff;
+    font-size: 16px;
+    font-weight:bold;
+}
+
+.new-chat-button:hover {
+    filter: brightness(0.9);
+}
+
+.new-chat-button:active {
+    transform: translateY(2px);
+}
+
+
+.history-block ul{
+    list-style: none;
+    padding: 30px;
+}
+
+.history-block ul li{
+    padding: 5px 0;
+}
+
+.history-block ul li::before{
+    content: '';
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: red;
+    display: inline-block;
+    margin-right: 10px;
+}
+
+/*----------------------- content block -------------------------------------*/
+.chat-header{
+    margin-left: 0.5em;
+    margin-bottom: 1em;
+    color: #fff;
+    font-size: 1.25em;
+    font-weight: bold;
+}
+
+.chat-messages {
+    margin-left: 2%;
+    width: 96%;
+    height: 100%;
+    overflow-y: scroll;
+}
+
+.chat-messages::-webkit-scrollbar{
+    display: none;
+}
+
+.message{
+    padding: 0.625em;
+    border-radius: 1em;
+    margin-bottom: 0.625em;
+    display: flex;
+    flex-direction: column;
+    color: #fff;
+}
+
+
+.msg-img{
+    width: 25px;
+    border-radius: 50%;
+    margin: 0 20px;
+}
+
+.messager-sender{
+    font-weight: bold;
+    margin-bottom: 0.31em;
+}
+
+.message-text{
+    font-size: 1em;
+    margin-bottom: 0.31em;
+    word-wrap: break-word;
+}
+
+.messager-timestamp{
+    font-size: 0.75em;
+    text-align: right;
+}
+
+.blue-bg{
+    background-color: #1c9bef;
+}
+
+.gray-bg{
+    background-color: #3d5365;
+}
+
+
+
+
+/* .msg-row{
+    display: flex;
+    align-items: center;
+    margin: 40px;
+}
+
+.msg-text{
+    background: rgba(255,255,255,0.1);
+    padding: 20px 40px;
+    border-radius: 8px;
+    flex-basis: 70%;
+    font-weight: 300;
+}
+
+.msg-text h2{
+    font-weight: 400;
+    font-size: 22px;
+    margin-bottom: 10px;
+}
+
+
+
+.msg-row2{
+    justify-content: flex-end;
+} */
+
+
+
+
+
+    
+
+

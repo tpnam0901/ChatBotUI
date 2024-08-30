@@ -13,7 +13,7 @@ class SignIn(View):
     def get(self, request):
         # check if user is logged in
         if request.user.is_authenticated:
-            return HttpResponseRedirect(reverse("authentication:noti"))
+            return HttpResponseRedirect(reverse("chatbot:chatbot"))
         return render(request, "authentication/signin.html")
 
     def login(self, request):
@@ -32,7 +32,7 @@ class SignIn(View):
         # Get username and password from form
         verify = self.login(request)
         if verify:
-            return HttpResponseRedirect(reverse("authentication:noti"))
+            return HttpResponseRedirect(reverse("chatbot:chatbot"))
         return render(
             request,
             "authentication/signin.html",
@@ -46,7 +46,7 @@ class SignUp(View):
     def get(self, request):
         # check if user is logged in
         if request.user.is_authenticated:
-            return HttpResponseRedirect(reverse("authentication:noti"))
+            return HttpResponseRedirect(reverse("chatbot:chatbot"))
         return render(request, "authentication/signup.html")
 
     def login(self, request):
@@ -136,7 +136,7 @@ class SignUp(View):
         # Verify user and login
         verify = self.login(request)
         if verify:
-            return HttpResponseRedirect(reverse("authentication:noti"))
+            return HttpResponseRedirect(reverse("chatbot:chatbot"))
         return noti(request, message)
 
 
