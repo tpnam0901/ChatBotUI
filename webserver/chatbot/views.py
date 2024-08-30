@@ -53,7 +53,7 @@ def gpt2_api(request, url):
     messages.append(
         {
             "sender": request.POST["sender"],
-            "text": request.POST["message"],
+            "text": request.POST["message"].replace('"', "''"),
             "timestamp": request.POST["timestamp"],
         }
     )
