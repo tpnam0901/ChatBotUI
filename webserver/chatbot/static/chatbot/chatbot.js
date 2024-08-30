@@ -79,17 +79,19 @@ window.onload = function (){
         }
         if (isNewMessage){
             messageID +=1
+        }
+        let currentMessageID = isNewMessage? `old-message-${messageID}` : document.querySelector('.active-message').classList[1] 
+        if (isNewMessage){
             newMessage = message.text
             isNewMessage= false
             chatHistory.innerHTML +=createOldMessageElement()
             updateHistory()
 
-            let classID = `old-message-${messageID}`
-            let child = document.querySelector(`.${classID}`)
+            let child = document.querySelector(`.${currentMessageID}`)
             child.classList.add("active-message")
             for (var j = 0; j < chatHistory.children.length; j++) {
                 let childCom = chatHistory.children[j]
-                if (!(classID === childCom.classList[1])){
+                if (!(currentMessageID === childCom.classList[1])){
                     childCom.classList.remove("active-message")
                 }
             }
@@ -98,11 +100,12 @@ window.onload = function (){
         localStorage.setItem('messages', JSON.stringify(messages))
         chatMessages.innerHTML += createChatMessageElement(message)
         let urlAPI = isOWTGPT ? gptOwtUrlAPI : gptCdUrlAPI
+         
         $.ajax({
             type: "POST",
             url: urlAPI,   
             data: {csrfmiddlewaretoken: csrfToken,
-                    'messageID': `old-message-${messageID}`,
+                    'messageID': `${currentMessageID}`,
                     'sender': "Human",
                     'message': chatInput.value,
                     'timestamp': timestamp,
@@ -169,13 +172,14 @@ window.onload = function (){
                         chatMessages.scrollTop = chatMessages.scrollHeight
                     }
                 });
-    
+                isNewMessage = false
                 }
             )
     
             oldMessageDeleteBtn.addEventListener('click',() => {
               if (child.classList.length === 3){
                   chatMessages.innerHTML = ''
+                  isNewMessage = false
                 }
                 $.ajax({
                     type: "POST",
