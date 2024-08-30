@@ -1,5 +1,6 @@
 import json
 import os
+import requests
 from datetime import datetime
 from django.shortcuts import render, HttpResponseRedirect, HttpResponse
 from django.views import View
@@ -59,9 +60,14 @@ def gpt2_api(request, url):
 
     try:
         # Call API
+        r = requests.post(
+            settings.GPT_API_URL,
+            json=json.dumps({"TOKEN": settings.GPT_TOKEN, "messages": messages}),
+        )
         timestamp = datetime.now().strftime("%m/%d/%Y, %H:%M")
-        response = {"text": "Bot response", "timestamp": timestamp}
-    except:
+        response = {"text": json.loads(r.json())["text"], "timestamp": timestamp}
+    except Exception as e:
+        print(e)
         timestamp = datetime.now().strftime("%m/%d/%Y, %H:%M")
         response = {
             "text": "I'm busy right now! Please try again later",

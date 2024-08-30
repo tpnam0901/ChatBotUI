@@ -29,6 +29,9 @@ ALLOWED_HOSTS = []
 
 USER_DATA_ROOT = "./userdata"
 
+GPT_API_PORT = 8123
+GPT_API_URL = f"http://localhost:{GPT_API_PORT}"
+GPT_TOKEN = "THIS_IS_MY_CUSTOM_TOKEN"
 
 # Application definition
 

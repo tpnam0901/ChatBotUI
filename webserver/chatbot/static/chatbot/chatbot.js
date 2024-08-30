@@ -116,6 +116,7 @@ window.onload = function (){
                     timestamp: botResponse["timestamp"],
                 }
                 chatMessages.innerHTML += createChatMessageElement(botMessage)
+                chatMessages.scrollTop = chatMessages.scrollHeight
             }
         });
 
@@ -164,7 +165,8 @@ window.onload = function (){
                               let oldMessage = oldMessages[j]
                               chatMessages.innerHTML += createChatMessageElement(oldMessage)
                           }
-                        
+                         
+                        chatMessages.scrollTop = chatMessages.scrollHeight
                     }
                 });
     
