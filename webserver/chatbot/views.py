@@ -61,7 +61,7 @@ def gpt2_api(request, url):
     try:
         # Call API
         r = requests.post(
-            settings.GPT_API_URL,
+            url,
             json=json.dumps({"TOKEN": settings.GPT_TOKEN, "messages": messages}),
         )
         timestamp = datetime.now().strftime("%m/%d/%Y, %H:%M")
@@ -93,7 +93,7 @@ def gpt2_owt_api(request):
     elif request.method == "POST":
         if not request.user.is_authenticated:
             return HttpResponse("Required sign-in to call API")
-        return gpt2_api(request, "#")
+        return gpt2_api(request, f"{settings.GPT_API_URL}:{settings.GPT_OWT_PORT}")
 
 
 def gpt2_cd_api(request):
@@ -102,7 +102,7 @@ def gpt2_cd_api(request):
     elif request.method == "POST":
         if not request.user.is_authenticated:
             return HttpResponse("Required sign-in to call API")
-        return gpt2_api(request, "#")
+        return gpt2_api(request, f"{settings.GPT_API_URL}:{settings.GPT_CD_PORT}")
 
 
 def get_history_api(request):
