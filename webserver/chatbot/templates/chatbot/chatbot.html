@@ -11,10 +11,6 @@
 {% block body %}
     <div class="container">
         <div class="chatbox">
-            {% comment %} <div class="hidden-element" id="csrf-token">{{ csrf_token }}</div>
-            <div class="hidden-element" id="base-url">{{ base_url }}</div>
-            <div class="hidden-element" id="start-message-id">{{ start_message_id }}</div> {% endcomment %}
-
             <div class="history-block">
                 <button type="button" class="new-chat-button" id="new-chat"> + New chat</button>  
                 <div class="chat-history">
@@ -29,25 +25,13 @@
             </div>
             <div class="content-block"> 
                 <h2 class="chat-header">Openwebtext GPT2 Chatbot</h2>
-                <div class="chat-messages">
-                    {% comment %} <div class="message blue-bg">
-                        <div class="messager-sender"><img src="{% static 'authentication/media/logo.png' %}" class="msg-img">Human</div>
-                        <div class="messager-text">Human</div>
-                        <div class="messager-timestamp">10:31AM</div>
-                    </div>
-                    <div class="message gray-bg">
-                        <div class="messager-sender"><img src="{% static 'authentication/media/logo.png' %}" class="msg-img">Bot</div>
-                        <div class="messager-text">Bot</div>
-                        <div class="messager-timestamp">10:30AM</div>
-                    </div> {% endcomment %}
-                </div>
+                <div class="chat-messages"></div>
             </div>
             <div class="prompt-block">
                     <form class="chat-input-form">
                         <input type="text" class="chat-input" required placeholder="Type your messages here...">
                         <button type="submit" class"button send-button">Send</button>
                     </form>
-                    {% comment %} <button class="button clear-chat-button"> Clear chat</button> {% endcomment %}
             </div>
 
             <div class="bot-block">

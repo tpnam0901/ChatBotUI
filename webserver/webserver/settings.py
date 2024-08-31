@@ -25,7 +25,7 @@ SECRET_KEY = "django-insecure-&&$_h^)hyuyzuw-r7dw^5z*was7_6todv%!lpn9kn^wyl8-q2e
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 USER_DATA_ROOT = "./userdata"
 
