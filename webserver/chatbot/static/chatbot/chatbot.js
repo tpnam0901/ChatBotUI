@@ -80,7 +80,11 @@ window.onload = function (){
         if (isNewMessage){
             messageID +=1
         }
-        let currentMessageID = isNewMessage? `old-message-${messageID}` : document.querySelector('.active-message').classList[1] 
+        let activeMessage = document.querySelector('.active-message')
+        if (activeMessage === null){
+          isNewMessage = true
+        }
+        let currentMessageID = isNewMessage? `old-message-${messageID}` : activeMessage.classList[1]
         if (isNewMessage){
             newMessage = message.text
             isNewMessage= false
