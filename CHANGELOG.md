@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.2.1](https://github.com/tpnam0901/PrivateGPT_UI/compare/v0.2.0...v0.2.1) (2024-08-31)
+
+
+### Bug Fixes
+
+* auto create new message on old message ([ced767d](https://github.com/tpnam0901/PrivateGPT_UI/commit/ced767d88c4ce56fa539dcb46d6a98d2ec701906))
+* empty messages query ([2346afa](https://github.com/tpnam0901/PrivateGPT_UI/commit/2346afa277587121b9d6bae439cf5ab0828d15cb))
+* overflow screen ([d7416ea](https://github.com/tpnam0901/PrivateGPT_UI/commit/d7416ea02887e6c8df775589b3f480256d5a6074))
+
+
+### Performance Improvements
+
+* create variable in js, remove hidden items ([d139d05](https://github.com/tpnam0901/PrivateGPT_UI/commit/d139d055f4d97fc789eeb81de75d98b8f24171be))
+
 ## [0.2.0](https://github.com/tpnam0901/PrivateGPT_UI/compare/v0.1.0...v0.2.0) (2024-08-30)
 
 
