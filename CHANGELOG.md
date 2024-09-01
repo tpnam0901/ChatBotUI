@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.2](https://github.com/tpnam0901/PrivateGPT_UI/compare/v0.2.1...v0.2.2) (2024-09-01)
+
+
+### Performance Improvements
+
+* only send the 4 lastest messages to the prompt ([4a42110](https://github.com/tpnam0901/PrivateGPT_UI/commit/4a42110a692e0cc1f6aa6c15f54027d29f5dadb0))
+
 ## [0.2.1](https://github.com/tpnam0901/PrivateGPT_UI/compare/v0.2.0...v0.2.1) (2024-08-31)
 
 
