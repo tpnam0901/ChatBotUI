@@ -50,6 +50,9 @@ def gpt2_api(request, url):
     userdata["index"] = int(messageID.split("-")[-1])
 
     messages = userdata.get(messageID, [])
+
+    # Try to get the latest prompt only
+    messages = messages[-4:]
     messages.append(
         {
             "sender": request.POST["sender"],
