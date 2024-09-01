@@ -62,11 +62,11 @@ window.onload = function (){
         chatInput.focus()
     }
 
-    botSelectorBtnOWT.onclick = () => updateMessageSender('Openwebtext GPT2 Chatbot', true)
-    botSelectorBtnCD.onclick = () => updateMessageSender('Cusom dataset GPT2 Chatbot', false)
+    botSelectorBtnOWT.onclick = () => updateMessageSender('GPT2 Chatbot 1', true)
+    botSelectorBtnCD.onclick = () => updateMessageSender('GPT2 Chatbot 2', false)
 
     // Default
-    updateMessageSender('Openwebtext GPT2 Chatbot', true)
+    updateMessageSender('GPT2 Chatbot 1', true)
 
     const sendMessage = (e) => {
         e.preventDefault()
